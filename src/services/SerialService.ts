@@ -16,7 +16,7 @@ class SerialService {
   private dataListeners: Set<DataListener> = new Set();
   
   // Simulation State
-  private telemetryInterval: NodeJS.Timeout | null = null;
+  private telemetryInterval: ReturnType<typeof setInterval> | null = null;
   private isRunning: boolean = false;
   private currentFreq: number = 25000;
   

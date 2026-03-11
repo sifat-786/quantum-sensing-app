@@ -30,6 +30,7 @@
 - Send and receive raw serial strings.
 
 ## Phase 5: Real-Time Data Parsing & Visualization
+**Status**: ✅ Complete
 - Parse incoming Arduino data (FREQ, CAP, RES, IMP).
 - Link parsed data to the dashboard data cards and graphs.
 

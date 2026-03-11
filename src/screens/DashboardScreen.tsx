@@ -9,20 +9,36 @@ import { SensorCard } from '../components/SensorCard';
 import { RealTimeChart } from '../components/RealTimeChart';
 import { ExperimentToolbar } from '../components/ExperimentToolbar';
 import { serialService } from '../services/SerialService';
+import type { TelemetryData } from '../services/SerialService';
 
 export const DashboardScreen: React.FC = () => {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(serialService.getStatus());
+  const [telemetry, setTelemetry] = useState<TelemetryData | null>(null);
+  const [capHistory, setCapHistory] = useState<number[]>(new Array(20).fill(12.0));
 
   useEffect(() => {
     const handleStatusChange = (status: ConnectionStatus) => {
       setConnectionStatus(status);
     };
 
+    const handleData = (data: TelemetryData) => {
+      setTelemetry(data);
+      setCapHistory(prev => {
+        const next = [...prev, data.cap];
+        if (next.length > 20) {
+          next.shift();
+        }
+        return next;
+      });
+    };
+
     serialService.addListener(handleStatusChange);
+    serialService.addDataListener(handleData);
     serialService.connect();
 
     return () => {
       serialService.removeListener(handleStatusChange);
+      serialService.removeDataListener(handleData);
     };
   }, []);
 
@@ -34,14 +50,14 @@ export const DashboardScreen: React.FC = () => {
         <FrequencyControl />
 
         <View style={styles.sensorsRow}>
-          <SensorCard title="Capacitance" value={12.5} unit="pF" color={colors.primary} />
-          <SensorCard title="Res. Freq" value={25.4} unit="kHz" color={colors.accent} />
-          <SensorCard title="Impedance" value={3.2} unit="kΩ" color="#FFD700" />
+          <SensorCard title="Capacitance" value={telemetry ? parseFloat(telemetry.cap.toFixed(2)) : 0.0} unit="pF" color={colors.primary} />
+          <SensorCard title="Res. Freq" value={telemetry ? parseFloat(telemetry.res.toFixed(1)) : 0.0} unit="kHz" color={colors.accent} />
+          <SensorCard title="Impedance" value={telemetry ? parseFloat(telemetry.imp.toFixed(1)) : 0.0} unit="kΩ" color="#FFD700" />
         </View>
 
         <RealTimeChart 
           title="Capacitance vs Time" 
-          data={[12, 12.5, 12.3, 12.8, 13.0, 12.5]} 
+          data={capHistory} 
           color={colors.primary}
         />
       </ScrollView>

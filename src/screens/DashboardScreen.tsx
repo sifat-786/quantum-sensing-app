@@ -7,7 +7,7 @@ import { colors, typography, globalStyles } from '../theme/theme';
 export const DashboardScreen: React.FC = () => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <StatusBanner isConnected={false} />
+      <StatusBanner status="disconnected" />
       
       <FrequencyControl />
 

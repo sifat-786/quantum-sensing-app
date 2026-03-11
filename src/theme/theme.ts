@@ -1,13 +1,20 @@
 import { StyleSheet } from 'react-native';
 
 export const colors = {
-  background: '#121212', // Dark background
+  background: '#0D0E15', // Scientific Dark Lab
   primary: '#00F0FF',    // Electric Blue
+  primaryGlow: 'rgba(0, 240, 255, 0.4)',
   accent: '#39FF14',     // Neon Green
+  accentGlow: 'rgba(57, 255, 20, 0.4)',
   text: '#FFFFFF',       // White text
-  textSecondary: '#A0A0A0', // Light grey for secondary text
-  cardBackground: '#1E1E1E', // Slightly lighter dark for panels
-  danger: '#FF3333',     // Red for errors
+  textSecondary: '#A0AABB', // Cool grey for secondary text
+  cardBackground: '#161824', // Deep blue-grey for panels
+  cardBorder: '#2A2D43',
+  
+  // Connection States
+  statusDisconnected: '#FF2A2A', // Neon Red
+  statusConnecting: '#FFD700',   // Neon Yellow
+  statusConnected: '#39FF14',    // Neon Green
 };
 
 export const typography = StyleSheet.create({
@@ -15,11 +22,13 @@ export const typography = StyleSheet.create({
     fontFamily: 'Inter_700Bold',
     fontSize: 24,
     color: colors.text,
+    letterSpacing: 0.5,
   },
   h2: {
     fontFamily: 'Inter_600SemiBold',
     fontSize: 20,
     color: colors.text,
+    letterSpacing: 0.5,
   },
   body: {
     fontFamily: 'Inter_400Regular',
@@ -36,7 +45,21 @@ export const typography = StyleSheet.create({
     fontSize: 12,
     color: colors.textSecondary,
     textTransform: 'uppercase',
+    letterSpacing: 1,
   },
+  metric: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 32,
+    color: colors.primary,
+  }
+});
+
+export const getGlowStyle = (color: string) => ({
+  shadowColor: color,
+  shadowOffset: { width: 0, height: 0 },
+  shadowOpacity: 0.8,
+  shadowRadius: 10,
+  elevation: 10,
 });
 
 export const globalStyles = StyleSheet.create({
@@ -46,13 +69,11 @@ export const globalStyles = StyleSheet.create({
   },
   card: {
     backgroundColor: colors.cardBackground,
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
     marginVertical: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderWidth: 1,
+    borderColor: colors.cardBorder,
+    ...getGlowStyle('rgba(0,0,0,0.5)'), // Subtle base shadow
   },
 });

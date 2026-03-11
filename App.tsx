@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, SafeAreaView, ActivityIndicator } from 'react-native';
 import {
   useFonts,
   Inter_400Regular,
@@ -8,7 +8,8 @@ import {
   Inter_600SemiBold,
   Inter_700Bold,
 } from '@expo-google-fonts/inter';
-import { colors, typography, globalStyles } from './src/theme/theme';
+import { colors, globalStyles } from './src/theme/theme';
+import { DashboardScreen } from './src/screens/DashboardScreen';
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -29,10 +30,7 @@ export default function App() {
   return (
     <SafeAreaView style={globalStyles.container}>
       <StatusBar style="light" />
-      <View style={[globalStyles.container, styles.center]}>
-        <Text style={[typography.h1, { color: colors.primary }]}>AQC Sensor Dashboard</Text>
-        <Text style={[typography.body, { marginTop: 16 }]}>Project initialized successfully.</Text>
-      </View>
+      <DashboardScreen />
     </SafeAreaView>
   );
 }

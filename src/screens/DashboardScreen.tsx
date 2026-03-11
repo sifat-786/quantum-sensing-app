@@ -1,18 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { StatusBanner } from '../components/StatusBanner';
+import { StatusBanner, ConnectionStatus } from '../components/StatusBanner';
 import { FrequencyControl } from '../components/FrequencyControl';
 import { colors, typography, globalStyles } from '../theme/theme';
 
 import { SensorCard } from '../components/SensorCard';
 import { RealTimeChart } from '../components/RealTimeChart';
 import { ExperimentToolbar } from '../components/ExperimentToolbar';
+import { serialService } from '../services/SerialService';
 
 export const DashboardScreen: React.FC = () => {
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(serialService.getStatus());
+
+  useEffect(() => {
+    const handleStatusChange = (status: ConnectionStatus) => {
+      setConnectionStatus(status);
+    };
+
+    serialService.addListener(handleStatusChange);
+    serialService.connect();
+
+    return () => {
+      serialService.removeListener(handleStatusChange);
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <StatusBanner status="disconnected" />
+        <StatusBanner status={connectionStatus} />
         
         <FrequencyControl />
 

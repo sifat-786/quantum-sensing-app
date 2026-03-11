@@ -1,38 +1,65 @@
 export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected';
 
+export interface TelemetryData {
+  cap: number;
+  res: number;
+  imp: number;
+  freq: number;
+}
+
 export type StatusListener = (status: ConnectionStatus) => void;
+export type DataListener = (data: TelemetryData) => void;
 
 class SerialService {
   private status: ConnectionStatus = 'disconnected';
-  private listeners: Set<StatusListener> = new Set();
+  private statusListeners: Set<StatusListener> = new Set();
+  private dataListeners: Set<DataListener> = new Set();
+  
+  // Simulation State
+  private telemetryInterval: NodeJS.Timeout | null = null;
+  private isRunning: boolean = false;
+  private currentFreq: number = 25000;
   
   public getStatus(): ConnectionStatus {
     return this.status;
   }
 
   public addListener(listener: StatusListener) {
-    this.listeners.add(listener);
+    this.statusListeners.add(listener);
   }
 
   public removeListener(listener: StatusListener) {
-    this.listeners.delete(listener);
+    this.statusListeners.delete(listener);
   }
 
-  private notifyListeners() {
-    this.listeners.forEach(listener => listener(this.status));
+  public addDataListener(listener: DataListener) {
+    this.dataListeners.add(listener);
+  }
+
+  public removeDataListener(listener: DataListener) {
+    this.dataListeners.delete(listener);
+  }
+
+  private notifyStatus() {
+    this.statusListeners.forEach(listener => listener(this.status));
+  }
+
+  private notifyData(data: TelemetryData) {
+    this.dataListeners.forEach(listener => listener(data));
   }
 
   public connect() {
     if (this.status !== 'disconnected') return;
 
     this.status = 'connecting';
-    this.notifyListeners();
+    this.notifyStatus();
 
     // Simulate connection delay
     setTimeout(() => {
       this.status = 'connected';
-      this.notifyListeners();
+      this.notifyStatus();
       console.log('[SerialService] Connected');
+      this.startTelemetryLoop();
     }, 1500);
   }
 
@@ -40,7 +67,8 @@ class SerialService {
     if (this.status === 'disconnected') return;
     
     this.status = 'disconnected';
-    this.notifyListeners();
+    this.notifyStatus();
+    this.stopTelemetryLoop();
     console.log('[SerialService] Disconnected');
   }
 
@@ -50,6 +78,50 @@ class SerialService {
       return;
     }
     console.log('[SerialService] Sent string ->', cmd);
+    
+    // Parse simulated hardware commands
+    if (cmd.startsWith('SET_FREQ:')) {
+      const val = parseInt(cmd.replace('SET_FREQ:', ''), 10);
+      if (!isNaN(val)) this.currentFreq = val;
+    } else if (cmd === 'START') {
+      this.isRunning = true;
+    } else if (cmd === 'PAUSE' || cmd === 'STOP') {
+      this.isRunning = false;
+    }
+  }
+
+  private startTelemetryLoop() {
+    if (this.telemetryInterval) clearInterval(this.telemetryInterval);
+    
+    this.telemetryInterval = setInterval(() => {
+      if (this.status === 'connected' && this.isRunning) {
+        // Generate realistic mock data based on current frequency
+        const capBase = 12.0 + (this.currentFreq / 80000) * 2; // base cap
+        const capJitter = (Math.random() - 0.5) * 0.4;
+        
+        const resBase = 24.0 + (this.currentFreq / 40000);
+        const resJitter = (Math.random() - 0.5) * 0.2;
+
+        const impBase = 3.0 + (this.currentFreq / 80000);
+        const impJitter = (Math.random() - 0.5) * 0.1;
+
+        const data: TelemetryData = {
+          cap: capBase + capJitter,
+          res: resBase + resJitter,
+          imp: impBase + impJitter,
+          freq: this.currentFreq
+        };
+        
+        this.notifyData(data);
+      }
+    }, 100);
+  }
+
+  private stopTelemetryLoop() {
+    if (this.telemetryInterval) {
+      clearInterval(this.telemetryInterval);
+      this.telemetryInterval = null;
+    }
   }
 }
 

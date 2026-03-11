@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import Slider from '@react-native-community/slider';
-import { colors, typography, globalStyles } from '../theme/theme';
+import { FrequencyKnob } from './FrequencyKnob';
+import { colors, typography, globalStyles, getGlowStyle } from '../theme/theme';
 
 export const FrequencyControl: React.FC = () => {
   const [frequency, setFrequency] = useState<number>(25000);
@@ -10,9 +10,9 @@ export const FrequencyControl: React.FC = () => {
   const MAX_FREQ = 80000;
   const MIN_FREQ = 2;
 
-  const handleSliderChange = (val: number) => {
-    setFrequency(Math.round(val));
-    setInputValue(Math.round(val).toString());
+  const handleKnobChange = (val: number) => {
+    setFrequency(val);
+    setInputValue(val.toString());
   };
 
   const handleInputChange = (text: string) => {
@@ -34,14 +34,36 @@ export const FrequencyControl: React.FC = () => {
     setFrequency(num);
   };
 
+  const setPreset = (val: number) => {
+    setFrequency(val);
+    setInputValue(val.toString());
+  };
+
   const handleSetFrequency = () => {
     // Dummy callback for now, later will send SET_FREQ
     Alert.alert('Command Sent', `SET_FREQ:${frequency}`);
   };
 
+  const presets = [5000, 10000, 25000, 40000];
+
   return (
     <View style={globalStyles.card}>
-      <Text style={typography.h2}>Frequency Control</Text>
+      <Text style={[typography.h2, { marginBottom: 12 }]}>Frequency Control</Text>
+      
+      <FrequencyKnob 
+        value={frequency} 
+        min={MIN_FREQ} 
+        max={MAX_FREQ} 
+        onChange={handleKnobChange} 
+      />
+
+      <View style={styles.presetRow}>
+        {presets.map(p => (
+          <TouchableOpacity key={p} style={styles.presetButton} onPress={() => setPreset(p)}>
+            <Text style={styles.presetText}>{p / 1000}k</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
       <View style={styles.inputRow}>
         <TextInput
@@ -55,18 +77,7 @@ export const FrequencyControl: React.FC = () => {
         <Text style={[typography.body, { marginLeft: 8 }]}>Hz</Text>
       </View>
 
-      <Slider
-        style={styles.slider}
-        minimumValue={MIN_FREQ}
-        maximumValue={MAX_FREQ}
-        value={frequency}
-        onValueChange={handleSliderChange}
-        minimumTrackTintColor={colors.primary}
-        maximumTrackTintColor={colors.textSecondary}
-        thumbTintColor={colors.primary}
-      />
-
-      <TouchableOpacity style={styles.button} onPress={handleSetFrequency}>
+      <TouchableOpacity style={[styles.button, getGlowStyle(colors.primaryGlow)]} onPress={handleSetFrequency}>
         <Text style={[typography.h2, { color: colors.background }]}>Set Frequency</Text>
       </TouchableOpacity>
     </View>
@@ -74,10 +85,27 @@ export const FrequencyControl: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  presetRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  presetButton: {
+    backgroundColor: colors.cardBorder,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.primaryGlow,
+  },
+  presetText: {
+    ...typography.label,
+    color: colors.primary,
+  },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 16,
+    marginBottom: 16,
   },
   input: {
     ...typography.h1,
@@ -87,15 +115,11 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     color: colors.primary,
   },
-  slider: {
-    width: '100%',
-    height: 40,
-  },
   button: {
     backgroundColor: colors.primary,
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 8,
   },
 });

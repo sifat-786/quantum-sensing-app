@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FrequencyKnob } from './FrequencyKnob';
 import { colors, typography } from '../theme/theme';
+import { serialService } from '../services/SerialService';
 
 export const FrequencyControl: React.FC = () => {
   const [frequency, setFrequency] = useState<number>(25000);
@@ -11,10 +12,12 @@ export const FrequencyControl: React.FC = () => {
 
   const handleKnobChange = (val: number) => {
     setFrequency(val);
+    serialService.sendCommand(`SET_FREQ:${val}`);
   };
 
   const setPreset = (val: number) => {
     setFrequency(val);
+    serialService.sendCommand(`SET_FREQ:${val}`);
   };
 
   const presets = [5000, 10000, 25000, 40000];

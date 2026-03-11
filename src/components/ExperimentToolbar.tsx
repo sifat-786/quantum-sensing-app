@@ -2,11 +2,21 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, typography, getGlowStyle } from '../theme/theme';
+import { serialService } from '../services/SerialService';
 
 export const ExperimentToolbar: React.FC = () => {
   const [isRunning, setIsRunning] = useState(false);
 
-  const toggleExperiment = () => setIsRunning(!isRunning);
+  const toggleExperiment = () => {
+    const nextState = !isRunning;
+    setIsRunning(nextState);
+    serialService.sendCommand(nextState ? 'START' : 'PAUSE');
+  };
+
+  const stopExperiment = () => {
+    setIsRunning(false);
+    serialService.sendCommand('STOP');
+  };
 
   return (
     <View style={styles.container}>
@@ -22,7 +32,7 @@ export const ExperimentToolbar: React.FC = () => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={stopExperiment}>
         <MaterialCommunityIcons name="stop" size={28} color={colors.statusDisconnected} />
       </TouchableOpacity>
 

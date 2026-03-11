@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { StatusBanner, ConnectionStatus } from '../components/StatusBanner';
+import { StatusBanner } from '../components/StatusBanner';
+import type { ConnectionStatus } from '../components/StatusBanner';
 import { FrequencyControl } from '../components/FrequencyControl';
 import { colors, typography, globalStyles } from '../theme/theme';
 

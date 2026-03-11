@@ -1,6 +1,7 @@
 export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected';
 
 export interface TelemetryData {
+  timestamp?: number;
   cap: number;
   res: number;
   imp: number;
@@ -19,9 +20,14 @@ class SerialService {
   private telemetryInterval: ReturnType<typeof setInterval> | null = null;
   private isRunning: boolean = false;
   private currentFreq: number = 25000;
+  private sessionLog: TelemetryData[] = [];
   
   public getStatus(): ConnectionStatus {
     return this.status;
+  }
+
+  public getSessionLog(): TelemetryData[] {
+    return this.sessionLog;
   }
 
   public addListener(listener: StatusListener) {
@@ -85,6 +91,7 @@ class SerialService {
       if (!isNaN(val)) this.currentFreq = val;
     } else if (cmd === 'START') {
       this.isRunning = true;
+      this.sessionLog = []; // clear previous log
     } else if (cmd === 'PAUSE' || cmd === 'STOP') {
       this.isRunning = false;
     }
@@ -106,12 +113,14 @@ class SerialService {
         const impJitter = (Math.random() - 0.5) * 0.1;
 
         const data: TelemetryData = {
+          timestamp: Date.now(),
           cap: capBase + capJitter,
           res: resBase + resJitter,
           imp: impBase + impJitter,
           freq: this.currentFreq
         };
         
+        this.sessionLog.push({...data});
         this.notifyData(data);
       }
     }, 100);

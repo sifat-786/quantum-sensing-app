@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, typography, getGlowStyle } from '../theme/theme';
 import { serialService } from '../services/SerialService';
+import { exportSessionToCSV } from '../utils/ExportUtils';
 
 export const ExperimentToolbar: React.FC = () => {
   const [isRunning, setIsRunning] = useState(false);
@@ -16,6 +17,15 @@ export const ExperimentToolbar: React.FC = () => {
   const stopExperiment = () => {
     setIsRunning(false);
     serialService.sendCommand('STOP');
+  };
+
+  const handleExport = async () => {
+    const data = serialService.getSessionLog();
+    if (data.length === 0) {
+      alert("No data to export. Run an experiment first.");
+      return;
+    }
+    await exportSessionToCSV(data);
   };
 
   return (
@@ -36,7 +46,7 @@ export const ExperimentToolbar: React.FC = () => {
         <MaterialCommunityIcons name="stop" size={28} color={colors.statusDisconnected} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleExport}>
         <MaterialCommunityIcons name="download" size={28} color={colors.textSecondary} />
       </TouchableOpacity>
       

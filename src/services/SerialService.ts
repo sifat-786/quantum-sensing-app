@@ -19,6 +19,7 @@ class SerialService {
   // Simulation State
   private telemetryInterval: ReturnType<typeof setInterval> | null = null;
   private isRunning: boolean = false;
+  private isSweeping: boolean = false;
   private currentFreq: number = 25000;
   private sessionLog: TelemetryData[] = [];
   
@@ -94,6 +95,12 @@ class SerialService {
       this.sessionLog = []; // clear previous log
     } else if (cmd === 'PAUSE' || cmd === 'STOP') {
       this.isRunning = false;
+      this.isSweeping = false; // abort sweep if stopped
+    } else if (cmd === 'SWEEP_START') {
+      this.isSweeping = true;
+      this.isRunning = true; // Sweeping implies running
+    } else if (cmd === 'SWEEP_STOP') {
+      this.isSweeping = false;
     }
   }
 
@@ -102,6 +109,15 @@ class SerialService {
     
     this.telemetryInterval = setInterval(() => {
       if (this.status === 'connected' && this.isRunning) {
+        
+        // Handle Auto Sweep Stepping
+        if (this.isSweeping) {
+          this.currentFreq += 100;
+          if (this.currentFreq > 60000) {
+            this.currentFreq = 2000; // loop back to bottom of sweep range
+          }
+        }
+
         // Generate realistic mock data based on current frequency
         const capBase = 12.0 + (this.currentFreq / 80000) * 2; // base cap
         const capJitter = (Math.random() - 0.5) * 0.4;

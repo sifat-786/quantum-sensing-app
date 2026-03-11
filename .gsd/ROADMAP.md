@@ -35,5 +35,6 @@
 - Link parsed data to the dashboard data cards and graphs.
 
 ## Phase 6: Data Logging & Advanced Features
+**Status**: ✅ Complete
 - Implement CSV export logging.
 - Add Auto Frequency Sweep and Calibration modes.

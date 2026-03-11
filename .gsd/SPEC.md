@@ -9,12 +9,12 @@ Build a prototype Android mobile application (Android 8.0+) that acts as the pri
 - Target: Android 8.0+
 
 ## Features
-1. **Interactive Frequency Controller:** Circular dial/knob controller, preset buttons (5kHz, 10kHz, 25kHz, 40kHz), real-time animated values (2 Hz - 80 kHz). Sends `SET_FREQ:<value>`.
-2. **Live Sensor Dashboard Cards:** Animated data cards for Quantum Capacitance, Resonant Frequency, Impedance, with mini sparkline graphs and color glow on updates.
-3. **Real-Time Graph Area:** Actual charts (using victory-native or react-native-chart-kit) for Cap vs Time, ResFreq vs Response, Imp vs Time. Auto scrolling, pause/resume, hover data points, neon grid lines.
-4. **Device Status Panel:** Connection indicator (Disconnected -> red pulse, Connecting -> yellow spinner, Connected -> green indicator), USB icon and connection animation.
-5. **Experiment Controls:** Bottom toolbar with Start Experiment, Pause, Stop, Export Data.
-6. **Scientific Instrument Styling:** Dark lab theme, electric blue highlights, neon green data, soft glow graphs, rounded cards, smooth transitions.
+1. **Interactive Frequency Controller:** Large central circular dial/knob controller, prominent preset buttons (5kHz, 10kHz, 25kHz, 40kHz), large real-time animated values (2 Hz - 80 kHz). Sends `SET_FREQ:<value>`.
+2. **Clean Sensor Dashboard Cards:** Minimalist data cards for Quantum Capacitance, Resonant Frequency, Impedance containing large numbers, units, and small trend indicator (no graphs inside cards).
+3. **Single Real-Time Graph:** Actual chart for Cap vs Time only. Smooth animated line, auto scrolling, pause button.
+4. **Device Status Panel:** Connection indicator at top, simple and clean.
+5. **Experiment Controls:** Compact modern icon toolbar at bottom with Start, Pause, Stop, Export.
+6. **Modern UI Styling:** Tesla/Apple Health inspired minimalist dark lab theme. Deep black/dark gradient background, cyan/neon green accents, smooth transitions, rounded cards, soft drop shadows.
 7. **Experiment Logging:** Timestamp, Freq, Cap, ResFreq, Imp. Export to CSV/Excel.
 8. **(Optional) Auto Frequency Sweep:** 2kHz to 60kHz (100Hz steps).
 9. **(Optional) Calibration Mode:** Insert sample, calibrate baseline.
@@ -26,5 +26,5 @@ Build a prototype Android mobile application (Android 8.0+) that acts as the pri
 - Out: `SET_FREQ:25000`
 
 ## UI Design
-- Theme: Scientific Dark Lab (Background), Electric Blue (Primary), Neon Green (Accent), White text. Use gradients, soft glows.
-- Layout: Top (Status) -> Center (Control) -> Middle (Live Data & Graphs) -> Bottom (Experiment Toolbar).
+- Theme: Modern Tech Dark (Background), Cyan (Primary), Neon Green (Accent), White text. Use deep blacks, soft glows, rounded corners.
+- Layout: Top (Status) -> Middle (Large Frequency Control) -> Bottom (Clean Sensor Metrics & Single Graph) -> Bottom Edge (Compact Toolbar).

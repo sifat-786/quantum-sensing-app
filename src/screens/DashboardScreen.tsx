@@ -4,7 +4,8 @@ import { StatusBanner } from '../components/StatusBanner';
 import { FrequencyControl } from '../components/FrequencyControl';
 import { colors, typography, globalStyles } from '../theme/theme';
 
-import { SensorCard } from './SensorCard';
+import { SensorCard } from '../components/SensorCard';
+import { RealTimeChart } from '../components/RealTimeChart';
 
 export const DashboardScreen: React.FC = () => {
   return (
@@ -19,10 +20,24 @@ export const DashboardScreen: React.FC = () => {
         <SensorCard title="Impedance" value={3.2} unit="kΩ" color="#FFD700" />
       </View>
 
-      <View style={globalStyles.card}>
-        <Text style={typography.h2}>Real-Time Graphs</Text>
-        <Text style={[typography.body, { marginTop: 8 }]}>Charts will be implemented here (Phase 3)</Text>
-      </View>
+      <RealTimeChart 
+        title="Capacitance vs Time" 
+        data={[12, 12.5, 12.3, 12.8, 13.0, 12.5]} 
+        color={colors.primary}
+      />
+      
+      <RealTimeChart 
+        title="Res Freq vs Response" 
+        data={[24.0, 24.5, 25.4, 25.1, 24.8, 25.4]} 
+        color={colors.accent}
+        yAxisSuffix="k"
+      />
+
+      <RealTimeChart 
+        title="Impedance vs Time" 
+        data={[3.0, 3.1, 3.2, 3.1, 3.0, 3.2]} 
+        color="#FFD700"
+      />
     </ScrollView>
   );
 };

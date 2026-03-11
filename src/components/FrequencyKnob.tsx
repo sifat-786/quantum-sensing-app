@@ -11,7 +11,7 @@ interface FrequencyKnobProps {
   onChange: (val: number) => void;
 }
 
-const KNOB_SIZE = 220;
+const KNOB_SIZE = 280;
 const MAX_ANGLE = 270; // Sweep of the knob
 const START_ANGLE = 135; // Bottom left to bottom right
 
@@ -64,14 +64,14 @@ export const FrequencyKnob: React.FC<FrequencyKnobProps> = ({ value, min, max, o
     <GestureHandlerRootView>
       <View style={styles.container}>
         <GestureDetector gesture={panGesture}>
-          <Animated.View style={[styles.knobOuter, getGlowStyle(colors.primaryGlow)]}>
+          <Animated.View style={styles.knobOuter}>
             <View style={styles.knobInner}>
               <Animated.View style={[styles.indicatorContainer, indicatorStyle]}>
-                <View style={[styles.indicator, getGlowStyle(colors.primary)]} />
+                <View style={styles.indicator} />
               </Animated.View>
               <View style={styles.centerValue}>
-                <Text style={typography.metric}>{value}</Text>
-                <Text style={typography.label}>Hz</Text>
+                <Text style={[typography.metric, { fontSize: 56, color: colors.text }]}>{value}</Text>
+                <Text style={[typography.label, { color: colors.primary, marginTop: 4 }]}>Hz</Text>
               </View>
             </View>
           </Animated.View>
@@ -90,21 +90,19 @@ const styles = StyleSheet.create({
     width: KNOB_SIZE,
     height: KNOB_SIZE,
     borderRadius: KNOB_SIZE / 2,
-    backgroundColor: colors.cardBorder,
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: colors.primaryGlow,
+    borderWidth: 1,
+    borderColor: colors.cardBorder,
   },
   knobInner: {
     width: KNOB_SIZE - 40,
     height: KNOB_SIZE - 40,
     borderRadius: (KNOB_SIZE - 40) / 2,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#333',
   },
   centerValue: {
     alignItems: 'center',
@@ -121,6 +119,5 @@ const styles = StyleSheet.create({
     height: 4,
     backgroundColor: colors.primary,
     borderRadius: 2,
-    marginRight: 10,
   },
 });

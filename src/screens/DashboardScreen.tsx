@@ -27,19 +27,6 @@ export const DashboardScreen: React.FC = () => {
           data={[12, 12.5, 12.3, 12.8, 13.0, 12.5]} 
           color={colors.primary}
         />
-        
-        <RealTimeChart 
-          title="Res Freq vs Response" 
-          data={[24.0, 24.5, 25.4, 25.1, 24.8, 25.4]} 
-          color={colors.accent}
-          yAxisSuffix="k"
-        />
-
-        <RealTimeChart 
-          title="Impedance vs Time" 
-          data={[3.0, 3.1, 3.2, 3.1, 3.0, 3.2]} 
-          color="#FFD700"
-        />
       </ScrollView>
       <ExperimentToolbar />
     </View>

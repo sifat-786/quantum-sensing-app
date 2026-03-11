@@ -9,7 +9,7 @@ export const ExperimentToolbar: React.FC = () => {
   const toggleExperiment = () => setIsRunning(!isRunning);
 
   return (
-    <View style={[styles.container, getGlowStyle('rgba(0,0,0,0.8)')]}>
+    <View style={styles.container}>
       
       <TouchableOpacity 
         style={[styles.button, isRunning ? styles.buttonActive : {}]} 
@@ -17,25 +17,17 @@ export const ExperimentToolbar: React.FC = () => {
       >
         <MaterialCommunityIcons 
           name={isRunning ? 'pause' : 'play'} 
-          size={24} 
-          color={isRunning ? colors.statusConnecting : colors.statusConnected} 
+          size={28} 
+          color={colors.primary} 
         />
-        <Text style={[
-          styles.buttonText, 
-          { color: isRunning ? colors.statusConnecting : colors.statusConnected }
-        ]}>
-          {isRunning ? 'Pause' : 'Start'}
-        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}>
-        <MaterialCommunityIcons name="stop" size={24} color={colors.statusDisconnected} />
-        <Text style={[styles.buttonText, { color: colors.statusDisconnected }]}>Stop</Text>
+        <MaterialCommunityIcons name="stop" size={28} color={colors.statusDisconnected} />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}>
-        <MaterialCommunityIcons name="download" size={24} color={colors.primary} />
-        <Text style={[styles.buttonText, { color: colors.primary }]}>Export</Text>
+        <MaterialCommunityIcons name="download" size={28} color={colors.textSecondary} />
       </TouchableOpacity>
       
     </View>
@@ -45,30 +37,28 @@ export const ExperimentToolbar: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: 32, // Floating above edge
+    alignSelf: 'center', // Center horizontally
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(22, 24, 36, 0.95)', // Glassy dark card Background
-    borderTopWidth: 1,
-    borderTopColor: colors.cardBorder,
-    paddingVertical: 12,
-    paddingBottom: 24, // Safe area padding for standard devices
+    backgroundColor: 'rgba(10, 10, 14, 0.95)', // Very dark pill
+    borderRadius: 50, // Pill shaped
+    borderWidth: 1,
+    borderColor: colors.cardBorder,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    ...getGlowStyle('rgba(0, 255, 255, 0.1)'), // Subtle cyan glow
   },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginHorizontal: 8,
   },
   buttonActive: {
-    backgroundColor: 'rgba(255, 215, 0, 0.1)', // Subtle highlight when paused/active
+    backgroundColor: 'rgba(0, 255, 255, 0.1)', // Subtle highlight when active
   },
-  buttonText: {
-    ...typography.label,
-    marginTop: 4,
-  }
 });

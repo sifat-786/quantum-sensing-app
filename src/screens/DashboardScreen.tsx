@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   sensorsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 12,
-    marginHorizontal: -4, // Counteract card horizontal margins
+    marginVertical: 4,
+    marginHorizontal: 0,
   },
 });

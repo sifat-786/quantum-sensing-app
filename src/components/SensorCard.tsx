@@ -6,8 +6,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Path } from 'react-native-svg';
-import { colors, typography, globalStyles, getGlowStyle } from '../theme/theme';
+import { colors, typography } from '../theme/theme';
 
 interface SensorCardProps {
   title: string;
@@ -36,33 +35,21 @@ export const SensorCard: React.FC<SensorCardProps> = ({
     return {
       borderColor: color,
       borderWidth: 1,
-      backgroundColor: `rgba(${hexToRgb(color)}, ${glowOpacity.value * 0.15})`,
+      backgroundColor: `rgba(${hexToRgb(color)}, ${glowOpacity.value * 0.05})`, // Very subtle
       shadowColor: color,
       shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: glowOpacity.value * 0.8,
-      shadowRadius: 10,
-      elevation: glowOpacity.value > 0 ? 10 : 0,
+      shadowOpacity: glowOpacity.value * 0.4,
+      shadowRadius: 6,
+      elevation: glowOpacity.value > 0 ? 6 : 0,
     };
   });
 
   return (
     <Animated.View style={[styles.card, animatedGlowStyle]}>
-      <Text style={typography.label}>{title}</Text>
+      <Text style={[typography.label, { fontSize: 10 }]}>{title}</Text>
       <View style={styles.dataRow}>
-        <Text style={[typography.metric, { color }]}>{value.toFixed(1)}</Text>
-        <Text style={[typography.bodySmall, { color, marginLeft: 4, marginBottom: 4 }]}>{unit}</Text>
-      </View>
-      
-      <View style={styles.sparklineContainer}>
-        <Svg height="30" width="100%" viewBox="0 0 100 30" preserveAspectRatio="none">
-          <Path
-            d="M0 25 Q 10 20, 20 25 T 40 20 T 60 25 T 80 15 T 100 25"
-            stroke={color}
-            strokeWidth="2"
-            fill="none"
-            opacity="0.5"
-          />
-        </Svg>
+        <Text style={[typography.metric, { color, fontSize: 24 }]}>{value.toFixed(1)}</Text>
+        <Text style={[typography.bodySmall, { color, marginLeft: 2 }]}>{unit}</Text>
       </View>
     </Animated.View>
   );
@@ -80,23 +67,16 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     backgroundColor: colors.cardBackground,
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 12,
     marginHorizontal: 4,
     borderWidth: 1,
     borderColor: colors.cardBorder,
-    minHeight: 110,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   dataRow: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    marginTop: 8,
+    alignItems: 'baseline',
+    marginTop: 4,
   },
-  sparklineContainer: {
-    height: 30,
-    width: '100%',
-    marginTop: 8,
-    overflow: 'hidden',
-  }
 });

@@ -1,20 +1,20 @@
 import { StyleSheet } from 'react-native';
 
 export const colors = {
-  background: '#0D0E15', // Scientific Dark Lab
-  primary: '#00F0FF',    // Electric Blue
-  primaryGlow: 'rgba(0, 240, 255, 0.4)',
+  background: '#000000', // Deep black
+  primary: '#00FFFF',    // Cyan
+  primaryGlow: 'rgba(0, 255, 255, 0.4)',
   accent: '#39FF14',     // Neon Green
   accentGlow: 'rgba(57, 255, 20, 0.4)',
   text: '#FFFFFF',       // White text
   textSecondary: '#A0AABB', // Cool grey for secondary text
-  cardBackground: '#161824', // Deep blue-grey for panels
-  cardBorder: '#2A2D43',
+  cardBackground: '#0A0A0A', // Very dark grey for panels
+  cardBorder: '#1A1A1A',
   
   // Connection States
-  statusDisconnected: '#FF2A2A', // Neon Red
-  statusConnecting: '#FFD700',   // Neon Yellow
-  statusConnected: '#39FF14',    // Neon Green
+  statusDisconnected: '#FF3333', // Sharp Red
+  statusConnecting: '#FFD700',   // Yellow
+  statusConnected: '#00FFFF',    // Cyan for connected
 };
 
 export const typography = StyleSheet.create({
@@ -57,9 +57,9 @@ export const typography = StyleSheet.create({
 export const getGlowStyle = (color: string) => ({
   shadowColor: color,
   shadowOffset: { width: 0, height: 0 },
-  shadowOpacity: 0.8,
-  shadowRadius: 10,
-  elevation: 10,
+  shadowOpacity: 0.3, // Softer glow
+  shadowRadius: 6,    // Softer radius
+  elevation: 6,
 });
 
 export const globalStyles = StyleSheet.create({
@@ -69,11 +69,11 @@ export const globalStyles = StyleSheet.create({
   },
   card: {
     backgroundColor: colors.cardBackground,
-    borderRadius: 16,
+    borderRadius: 24, // Softer premium look
     padding: 16,
     marginVertical: 8,
     borderWidth: 1,
     borderColor: colors.cardBorder,
-    ...getGlowStyle('rgba(0,0,0,0.5)'), // Subtle base shadow
+    ...getGlowStyle('rgba(0,0,0,0.3)'), // Subtle base shadow
   },
 });

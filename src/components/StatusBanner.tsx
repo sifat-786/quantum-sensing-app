@@ -68,7 +68,7 @@ export const StatusBanner: React.FC<StatusBannerProps> = ({ status }) => {
   });
 
   return (
-    <View style={[globalStyles.card, styles.banner]}>
+    <View style={styles.banner}>
       <View style={styles.leftContent}>
         <MaterialCommunityIcons 
           name={status === 'connected' ? 'usb' : 'usb'} 
@@ -93,11 +93,12 @@ const styles = StyleSheet.create({
   banner: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderWidth: 1,
-    borderColor: colors.cardBorder,
+    justifyContent: 'center', // Center it at the top
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    elevation: 0,
   },
   leftContent: {
     flexDirection: 'row',
